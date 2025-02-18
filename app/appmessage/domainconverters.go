@@ -214,14 +214,14 @@ func RPCTransactionToDomainTransaction(rpcTransaction *RPCTransaction) (*externa
 	}
 
 	return &externalapi.DomainTransaction{
-		Version:        rpcTransaction.Version,
-		Inputs:         inputs,
-		Outputs:        outputs,
-		LockTime:       rpcTransaction.LockTime,
-		SubnetworkID:   *subnetworkID,
-		Gas:            rpcTransaction.Gas,
-		MassCommitment: rpcTransaction.Mass,
-		Payload:        payload,
+		Version:      rpcTransaction.Version,
+		Inputs:       inputs,
+		Outputs:      outputs,
+		LockTime:     rpcTransaction.LockTime,
+		SubnetworkID: *subnetworkID,
+		Gas:          rpcTransaction.Gas,
+		Mass:         rpcTransaction.Mass,
+		Payload:      payload,
 	}, nil
 }
 
@@ -289,7 +289,7 @@ func DomainTransactionToRPCTransaction(transaction *externalapi.DomainTransactio
 		LockTime:     transaction.LockTime,
 		SubnetworkID: subnetworkID,
 		Gas:          transaction.Gas,
-		Mass:         transaction.MassCommitment,
+		Mass:         transaction.Mass,
 		Payload:      payload,
 	}
 }
