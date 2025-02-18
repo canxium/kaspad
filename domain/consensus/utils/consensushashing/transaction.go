@@ -38,6 +38,22 @@ func TransactionHash(tx *externalapi.DomainTransaction) *externalapi.DomainHash 
 	return writer.Finalize()
 }
 
+// TransactionHashWithMass returns the transaction hash with mass option
+func TransactionHashWithMass(tx *externalapi.DomainTransaction, storageMassActivated bool) *externalapi.DomainHash {
+	// Encode the header and hash everything prior to the number of
+	// transactions.
+	writer := hashes.NewTransactionHashWriter()
+	err := serializeTransaction(writer, tx, txEncodingFull, storageMassActivated)
+	if err != nil {
+		// It seems like this could only happen if the writer returned an error.
+		// and this writer should never return an error (no allocations or possible failures)
+		// the only non-writer error path here is unknown types in `WriteElement`
+		panic(errors.Wrap(err, "TransactionHash() failed. this should never fail for structurally-valid transactions"))
+	}
+
+	return writer.Finalize()
+}
+
 // TransactionID generates the Hash for the transaction without the signature script and payload field.
 func TransactionID(tx *externalapi.DomainTransaction) *externalapi.DomainTransactionID {
 	// If transaction ID is already cached, return it
